@@ -6,6 +6,4 @@ return [
     "country" => "nl",
     "language" => "nl",
     "currency" => "EUR",
-
-
 ];
