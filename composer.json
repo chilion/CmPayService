@@ -1,0 +1,21 @@
+{
+    "name": "cjsdevelopment/cmpayservice",
+    "description": "Use the CM Pay service with Laravel",
+    "type": "library",
+    "license": "MIT",
+    "version" : "1.1",
+    "homepage" : "http://chilion.nl/published-cmpayservice-for-laravel-package/",
+    "authors": [
+        {
+            "name": "Chilion Snoek",
+            "email": "chilionsnoek@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+
+    "autoload": {
+      "psr-4": {
+        "CJSDevelopment\\": "src/"
+      }
+    }
+}
