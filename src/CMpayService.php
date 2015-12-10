@@ -44,7 +44,8 @@ class CMpayService
             "Language:".config('cmpayservice.language', "nl"),
             "Country:".config('cmpayservice.country', "nl"),
             "Amount:".(is_null($amount) ? "0.01" : $amount),
-            "Hash:".self::_calculateHash()
+
+            "Hash:".self::_calculateHash(["Amount" => $amount])
         ];
 
         $resultSet = self::transferData($jsonObject);
@@ -52,29 +53,28 @@ class CMpayService
 
     }
 
-    private function _calculateHash($amount = null) {
+    private function _calculateHash(array $hashArray = null) {
 
-        // Add in standard hash components
-        $hashString = "MerchantID=".config('cmpayservice.merchant_id').",Currency=".config('cmpayservice.currency', "EUR").",Language:".config('cmpayservice.language', "nl").",Country:".config('cmpayservice.country', "nl").",";
+        $hashString = "";
+
+        // First build the hash array
+        $hashArray["MerchantID"] = config('cmpayservice.merchant_id');
+        $hashArray["Currency"] = config('cmpayservice.currency');
+        $hashArray["Language"] = config('cmpayservice.language');
+        $hashArray["Country"] = config('cmpayservice.country');
+        $hashArray["Secret"] = config('cmpayservice.secret');
 
         // Add in extra components
-
-            // Is there an amount set?
-            $hashString .= (is_null($amount) ? "0,01" : $amount);
-
-            // Return URL?
-
-
-
-
-
-
-
             // Test?
-            $hashString .= (env("APP_DEBUG") == TRUE ? 1 : 0);
+        if(env("APP_DEBUG")) {
+            $hashArray["Test"] = 1;
+        }
 
+        $hashArray = ksort($hashArray);
 
-
+        foreach($hashArray as $key => $value) {
+            $hashString .= $key."=".$value.",";
+        }
 
         return hash("sha256", $hashString);
     }
