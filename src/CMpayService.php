@@ -7,50 +7,40 @@ use SimpleXMLElement;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
+define("paymentUrl", "https://pay.cm.nl/API/v3/getTransactionUrl");
+define("methodsUrl", "https://pay.cm.nl/API/v3/getPaymentMethods");
+
 class CMpayService
 {
-    protected $paymentUrl;
-    protected $methodsUrl;
-
-    public function __construct()
-    {
-        $this->paymentUrl = "https://pay.cm.nl/API/v3/getTransactionUrl";
-        $this->methodsUrl = "https://pay.cm.nl/API/v3/getPaymentMethods ";
-
-        return $this;
-    }
-
-    public function getMethodsUrl() {
-        return $this->methodsUrl;
-    }
-
-    public function getPaymentUrl() {
-        return $this->paymentUrl;
-    }
-
     public static function transferData($data) {
 
         $dataTransfer = new Client();
 
-        $dT = $dataTransfer->post(self::getMethodsUrl(), ['json' => [$data]]);
+        ksort($data);
 
+        dd(json_encode($data));
+        $dT = $dataTransfer->post(methodsUrl, ['json' => [json_encode($data)]]);
+
+        if ($dT->getStatusCode() != 200) {
+            return false;
+        }
+
+        //dd($dT);
         return $dT;
     }
 
-    public static function getPaymentMethods($amount = null) {
-        $jsonObject = [
-            "MerchantID:".config('cmpayservice.merchant_id'),
-            "Currency:".config('cmpayservice.currency', "EUR"),
-            "Language:".config('cmpayservice.language', "nl"),
-            "Country:".config('cmpayservice.country', "nl"),
-            "Amount:".(is_null($amount) ? "0.01" : $amount),
+    public static function getPaymentMethods($amount = "1") {
+        $sendObject["Amount"] = $amount;
+        $sendObject["MerchantID"] = config('cmpayservice.merchant_id');
+        $sendObject["Currency"] = config('cmpayservice.currency');
+        $sendObject["Language"] = config('cmpayservice.language');
+        $sendObject["Country"] = config('cmpayservice.country');
+        $sendObject["Secret"] = config('cmpayservice.secret');
+        $sendObject["Hash"] = self::_calculateHash(["Amount" => $amount]);
 
-            "Hash:".self::_calculateHash(["Amount" => $amount])
-        ];
+        $resultSet = self::transferData($sendObject);
 
-        $resultSet = self::transferData($jsonObject);
-
-
+        return $resultSet;
     }
 
     private static function _calculateHash(array $hashArray = null) {
@@ -65,7 +55,7 @@ class CMpayService
         $hashArray["Secret"] = config('cmpayservice.secret');
 
         // Add in extra components
-            // Test?
+        // Test?
         if(env("APP_DEBUG")) {
             $hashArray["Test"] = 1;
         }
@@ -76,7 +66,8 @@ class CMpayService
             $hashString .= $key."=".$value.",";
         }
 
-        return hash("sha256", $hashString);
+        //dd(rtrim($hashString, ","));
+        return hash("sha256", rtrim($hashString, ","));
     }
 
 
