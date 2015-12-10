@@ -53,7 +53,7 @@ class CMpayService
 
     }
 
-    private function _calculateHash(array $hashArray = null) {
+    private static function _calculateHash(array $hashArray = null) {
 
         $hashString = "";
 
@@ -70,7 +70,7 @@ class CMpayService
             $hashArray["Test"] = 1;
         }
 
-        $hashArray = ksort($hashArray);
+        ksort($hashArray);
 
         foreach($hashArray as $key => $value) {
             $hashString .= $key."=".$value.",";
