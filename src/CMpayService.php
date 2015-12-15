@@ -18,14 +18,14 @@ class CMpayService
 
         ksort($data);
 
-        dd(json_encode($data));
+        // dd(json_encode($data));
         $dT = $dataTransfer->post(methodsUrl, ['json' => [json_encode($data)]]);
 
         if ($dT->getStatusCode() != 200) {
             return false;
         }
 
-        //dd($dT);
+        dd($dT);
         return $dT;
     }
 
@@ -35,7 +35,6 @@ class CMpayService
         $sendObject["Currency"] = config('cmpayservice.currency');
         $sendObject["Language"] = config('cmpayservice.language');
         $sendObject["Country"] = config('cmpayservice.country');
-        $sendObject["Secret"] = config('cmpayservice.secret');
         $sendObject["Hash"] = self::_calculateHash(["Amount" => $amount]);
 
         $resultSet = self::transferData($sendObject);
