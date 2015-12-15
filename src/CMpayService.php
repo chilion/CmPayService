@@ -12,63 +12,72 @@ define("methodsUrl", "https://pay.cm.nl/API/v3/getPaymentMethods");
 
 class CMpayService
 {
-    public static function transferData($data) {
+    /**
+     * @param $amount
+     *
+     * @return bool|\Psr\Http\Message\ResponseInterface
+     */
+    public static function getPaymentMethods($amount)
+    {
+        $sendObject['MerchantID'] = config('cmpayservice.merchant_id');
+        $sendObject['Amount']     = $amount;
+        $sendObject['Currency']   = config('cmpayservice.currency');
+        $sendObject['Language']   = config('cmpayservice.language');
+        $sendObject['Country']    = config('cmpayservice.country');
+        $sendObject['Hash']       = self::_calculateHash(array_merge($sendObject, ['Amount' => $amount]));
 
-        $dataTransfer = new Client();
+        // Test?
+        if (env('APP_DEBUG')) {
 
-        ksort($data);
-
-        // dd(json_encode($data));
-        $dT = $dataTransfer->post(methodsUrl, ['json' => [json_encode($data)]]);
-
-        if ($dT->getStatusCode() != 200) {
-            return false;
+            $sendObject['Test'] = '1';
         }
-
-        dd($dT);
-        return $dT;
-    }
-
-    public static function getPaymentMethods($amount = "1") {
-        $sendObject["Amount"] = $amount;
-        $sendObject["MerchantID"] = config('cmpayservice.merchant_id');
-        $sendObject["Currency"] = config('cmpayservice.currency');
-        $sendObject["Language"] = config('cmpayservice.language');
-        $sendObject["Country"] = config('cmpayservice.country');
-        $sendObject["Hash"] = self::_calculateHash(["Amount" => $amount]);
 
         $resultSet = self::transferData($sendObject);
 
         return $resultSet;
     }
 
-    private static function _calculateHash(array $hashArray = null) {
-
-        $hashString = "";
-
-        // First build the hash array
-        $hashArray["MerchantID"] = config('cmpayservice.merchant_id');
-        $hashArray["Currency"] = config('cmpayservice.currency');
-        $hashArray["Language"] = config('cmpayservice.language');
-        $hashArray["Country"] = config('cmpayservice.country');
-        $hashArray["Secret"] = config('cmpayservice.secret');
-
-        // Add in extra components
+    /**
+     * @param array $options
+     *
+     * @return string
+     */
+    private static function _calculateHash(array $options = [])
+    {
         // Test?
-        if(env("APP_DEBUG")) {
-            $hashArray["Test"] = 1;
+        if (env('APP_DEBUG')) {
+
+            $options['Test'] = '1';
         }
 
-        ksort($hashArray);
+        ksort($options);
 
-        foreach($hashArray as $key => $value) {
-            $hashString .= $key."=".$value.",";
+        $options['Secret'] = config('cmpayservice.secret');
+
+        $hashString = '';
+        foreach ($options as $key => $value) {
+
+            $hashString .= $key . '=' . $value . ',';
         }
 
-        //dd(rtrim($hashString, ","));
-        return hash("sha256", rtrim($hashString, ","));
+        return hash('sha256', rtrim($hashString, ','));
     }
 
+    /**
+     * @param $data
+     *
+     * @return bool|\Psr\Http\Message\ResponseInterface
+     */
+    private static function transferData($data)
+    {
+        $dataTransfer = new Client();
 
+        $dT = $dataTransfer->post(methodsUrl, ['json' => $data]);
 
+        if ($dT->getStatusCode() != 200) {
+            return false;
+        }
+
+        return $dT;
+    }
 }
