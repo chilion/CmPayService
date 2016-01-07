@@ -59,10 +59,10 @@ class CMpayService
         $sendObject['Reference']            = (array_key_exists("reference", $parameters)) ? $parameters["reference"] : config('cmpayservice.reference_prefix', "your order with"). " " .config('cmpayservice.company', "company");
 
         // Return Url's
-        $sendObject["SuccessURL"]           = (array_key_exists("SuccessURL", $parameters) ? $parameters["SuccessURL"] : config('cmpayservice.return_url').config("cmpayservice.success_url"));
-        $sendObject["FailURL"]              = (array_key_exists("FailURL", $parameters) ? $parameters["FailURL"] : config('cmpayservice.return_url').config("cmpayservice.fail_url"));
-        $sendObject["ErrorURL"]             = (array_key_exists("ErrorURL", $parameters) ? $parameters["ErrorURL"] : config('cmpayservice.return_url').config("cmpayservice.error_url"));
-        $sendObject["CancelURL"]            = (array_key_exists("CancelURL", $parameters) ? $parameters["CancelURL"] : config('cmpayservice.return_url').config("cmpayservice.cancel_url"));
+        $sendObject["SuccessURL"]           = (array_key_exists("SuccessURL", $parameters)) ? $parameters["SuccessURL"] : config('cmpayservice.return_url').config("cmpayservice.success_url");
+        $sendObject["FailURL"]              = (array_key_exists("FailURL", $parameters)) ? $parameters["FailURL"] : config('cmpayservice.return_url').config("cmpayservice.fail_url");
+        $sendObject["ErrorURL"]             = (array_key_exists("ErrorURL", $parameters)) ? $parameters["ErrorURL"] : config('cmpayservice.return_url').config("cmpayservice.error_url");
+        $sendObject["CancelURL"]            = (array_key_exists("CancelURL", $parameters)) ? $parameters["CancelURL"] : config('cmpayservice.return_url').config("cmpayservice.cancel_url");
 
         // Payment data
         $sendObject['PaymentMethod']        = (array_key_exists("paymentMethod", $parameters)) ? $parameters["paymentMethod"] : "IDEAL";
