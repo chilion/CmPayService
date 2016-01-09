@@ -22,12 +22,16 @@ Execute the following commands in your console:
 
 # Config
 After executing the vendor:publish command you will find a config file in the Laravel config folder. Fill the Mandatory fields, check the optional.
+
 Don't forget to fill in the right company name and product token
 
 # Usage in your code:
 For payment methods + options:
 - CMpayService::getPaymentMethods($amount (should be integer));
+
 For payment:
+
 - CMpayService::getTransactionUrl($parameters);
+
 $parameters should contain at least amount, but can hold more options.
 
