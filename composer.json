@@ -3,7 +3,7 @@
     "description": "Use the CM Pay service with Laravel",
     "type": "library",
     "license": "MIT",
-    "version" : "1.11",
+    "version" : "1.2",
     "homepage" : "http://chilion.nl/published-cmpayservice-for-laravel-package/",
     "authors": [
         {
