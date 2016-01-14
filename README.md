@@ -4,15 +4,16 @@ CMpayService is a Laravel package for the API of CM Payments. (pay.cm.nl)
 # How to use it:
 ## composer
 Require it:
-"CJSDevelopment/CMpayService" : "dev-master"
+
+- "CJSDevelopment/CMpayService" : "dev-master"
 
 ## app.php
 Add the following data:
 ### ServiceProvider
-'CJSDevelopment\CMpayServiceProvider'
+- 'CJSDevelopment\CMpayServiceProvider'
 
 ### Facade
-'PaymentService' => 'CJSDevelopment\CMpayService',
+- 'PaymentService' => 'CJSDevelopment\CMpayService',
 
 ## Deploy / Update
 Execute the following commands in your console:
