@@ -2,20 +2,18 @@
 
 namespace CJSDevelopment;
 
-use SimpleXMLElement;
-
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 
-define("paymentUrl", "https://pay.cm.nl/API/v3/getTransactionUrl");
-define("methodsUrl", "https://pay.cm.nl/API/v3/getPaymentMethods");
+define('paymentUrl', 'https://pay.cm.nl/API/v3/getTransactionUrl');
+define('methodsUrl', 'https://pay.cm.nl/API/v3/getPaymentMethods');
 
 class CMpayService
 {
     /**
-     * getPaymentMethods
+     * getPaymentMethods.
      *
      * @since 01-2016
+     *
      * @author Chilion Snoek <chilionsnoek@gmail.com>
      *
      * @param $amount
@@ -28,10 +26,10 @@ class CMpayService
         $sendObject = self::mandatoryData();
 
         // Optional or Flexible Data
-        $sendObject['Amount']     = $amount;
+        $sendObject['Amount'] = $amount;
 
         // Hash Calculation
-        $sendObject['Hash']       = self::calculateHash($sendObject);
+        $sendObject['Hash'] = self::calculateHash($sendObject);
 
         // Get results
         $resultSet = self::transferData($sendObject, $method = 1);
@@ -40,58 +38,58 @@ class CMpayService
     }
 
     /**
-     * getTransactionUrl gets the Transaction Url from the API
+     * getTransactionUrl gets the Transaction Url from the API.
      *
      * @since 01-2016
+     *
      * @author Chilion Snoek <chilionsnoek@gmail.com>
      *
      * @param $parameters
      *
      * @return bool|string
      */
-    public static function getTransactionUrl($parameters) {
+    public static function getTransactionUrl($parameters)
+    {
 
         // Standard data
         $sendObject = self::mandatoryData();
 
         // Optional or Flexible Data
-        $sendObject['Amount']               = $parameters['amount'];
-        $sendObject['Reference']            = (array_key_exists("reference", $parameters)) ? $parameters["reference"] : config('cmpayservice.reference_prefix', "your order with"). " " .config('cmpayservice.company', "company");
+        $sendObject['Amount'] = $parameters['amount'];
+        $sendObject['Reference'] = (array_key_exists('reference', $parameters)) ? $parameters['reference'] : config('cmpayservice.reference_prefix', 'your order with').' '.config('cmpayservice.company', 'company');
 
         // Return Url's
-        $sendObject["SuccessURL"]           = (array_key_exists("SuccessURL", $parameters)) ? $parameters["SuccessURL"] : config('cmpayservice.return_url').config("cmpayservice.success_url");
-        $sendObject["FailURL"]              = (array_key_exists("FailURL", $parameters)) ? $parameters["FailURL"] : config('cmpayservice.return_url').config("cmpayservice.fail_url");
-        $sendObject["ErrorURL"]             = (array_key_exists("ErrorURL", $parameters)) ? $parameters["ErrorURL"] : config('cmpayservice.return_url').config("cmpayservice.error_url");
-        $sendObject["CancelURL"]            = (array_key_exists("CancelURL", $parameters)) ? $parameters["CancelURL"] : config('cmpayservice.return_url').config("cmpayservice.cancel_url");
+        $sendObject['SuccessURL'] = (array_key_exists('SuccessURL', $parameters)) ? $parameters['SuccessURL'] : config('cmpayservice.return_url').config('cmpayservice.success_url');
+        $sendObject['FailURL'] = (array_key_exists('FailURL', $parameters)) ? $parameters['FailURL'] : config('cmpayservice.return_url').config('cmpayservice.fail_url');
+        $sendObject['ErrorURL'] = (array_key_exists('ErrorURL', $parameters)) ? $parameters['ErrorURL'] : config('cmpayservice.return_url').config('cmpayservice.error_url');
+        $sendObject['CancelURL'] = (array_key_exists('CancelURL', $parameters)) ? $parameters['CancelURL'] : config('cmpayservice.return_url').config('cmpayservice.cancel_url');
 
         // Payment data
-        $sendObject['PaymentMethod']        = (array_key_exists("paymentMethod", $parameters)) ? $parameters["paymentMethod"] : "IDEAL";
-        $sendObject['PaymentMethodOption']  = (array_key_exists("paymentOption", $parameters)) ? $parameters["paymentOption"] : "ABNANL2A";
+        $sendObject['PaymentMethod'] = (array_key_exists('paymentMethod', $parameters)) ? $parameters['paymentMethod'] : 'IDEAL';
+        $sendObject['PaymentMethodOption'] = (array_key_exists('paymentOption', $parameters)) ? $parameters['paymentOption'] : 'ABNANL2A';
 
         // Hash Calculation
-        $sendObject['Hash']                 = self::calculateHash($sendObject);
+        $sendObject['Hash'] = self::calculateHash($sendObject);
 
         // Get results and return given URL
         return self::transferData($sendObject);
-
     }
 
-    public static function checkPayment($parameters) {
-
+    public static function checkPayment($parameters)
+    {
     }
 
     /**
      * Not Reachable functions. Should not, will not, be not, can not. Well, of course you can, because everything can. Coffee can. Thats a Dutch joke. Totally not working in English.
      *
      * Allright, this comment block was just to make a line between public accessible methods and private(ers)!
-     *
      */
 
-
     /**
-     * calculateHash calculates the Hash to encrypt your request with
+     * calculateHash calculates the Hash to encrypt your request with.
      *
      * @since 01-2016
+     *
      * @author Chilion Snoek <chilionsnoek@gmail.com>
      *
      * @param array $options
@@ -104,7 +102,6 @@ class CMpayService
 
         // Test?
         if (env('APP_DEBUG')) {
-
             $options['Test'] = '1';
         }
 
@@ -114,17 +111,17 @@ class CMpayService
 
         $hashString = '';
         foreach ($options as $key => $value) {
-
-            $hashString .= $key . '=' . $value . ',';
+            $hashString .= $key.'='.$value.',';
         }
 
         return hash('sha256', rtrim($hashString, ','));
     }
 
     /**
-     * transferData to the API method
+     * transferData to the API method.
      *
      * @since 01-2016
+     *
      * @author Chilion Snoek <chilionsnoek@gmail.com>
      *
      * @param $data
@@ -136,7 +133,6 @@ class CMpayService
     {
         // Test?
         if (env('APP_DEBUG')) {
-
             $data['Test'] = '1';
         }
 
@@ -152,20 +148,21 @@ class CMpayService
     }
 
     /**
-     * mandatoryData returns all mandatory data for each request
+     * mandatoryData returns all mandatory data for each request.
      *
      * @since 01-2016
+     *
      * @author Chilion Snoek <chilionsnoek@gmail.com>
      *
      * @return mixed
      */
-    private static function mandatoryData() {
-        $mandatoryData['MerchantID']           = config('cmpayservice.merchant_id');
-        $mandatoryData['Currency']             = config('cmpayservice.currency');
-        $mandatoryData['Language']             = config('cmpayservice.language');
-        $mandatoryData['Country']              = config('cmpayservice.country');
+    private static function mandatoryData()
+    {
+        $mandatoryData['MerchantID'] = config('cmpayservice.merchant_id');
+        $mandatoryData['Currency'] = config('cmpayservice.currency');
+        $mandatoryData['Language'] = config('cmpayservice.language');
+        $mandatoryData['Country'] = config('cmpayservice.country');
 
         return $mandatoryData;
     }
-
 }
