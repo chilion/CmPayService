@@ -3,6 +3,8 @@
 namespace CJSDevelopment;
 
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+
 
 define('paymentUrl', 'https://pay.cm.nl/API/v3/getTransactionUrl');
 define('methodsUrl', 'https://pay.cm.nl/API/v3/getPaymentMethods');
@@ -75,9 +77,22 @@ class CMpayService
         return self::transferData($sendObject);
     }
 
-    public static function checkPayment($parameters)
+    public static function checkPayment(Request $request, array $parameters = null)
     {
+        dd($request->all());
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Not Reachable functions. Should not, will not, be not, can not. Well, of course you can, because everything can. Coffee can. Thats a Dutch joke. Totally not working in English.

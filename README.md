@@ -27,12 +27,15 @@ After executing the vendor:publish command you will find a config file in the La
 Don't forget to fill in the right company name and product token
 
 # Usage in your code:
-For payment methods + options:
+## Initializing
+For payment methods & options:
 - CMpayService::getPaymentMethods($amount (should be integer));
 
-For payment:
-
+## Executing
+To forward the customer to the payment screen of their financial instance.
 - CMpayService::getTransactionUrl($parameters);
 
+## Check
+- CMpayService::checkPayment(Request::post);
 $parameters should contain at least amount, but can hold more options.
 
