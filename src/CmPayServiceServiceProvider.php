@@ -4,7 +4,7 @@ namespace CJSDevelopment;
 
 use Illuminate\Support\ServiceProvider;
 
-class CMpayServiceServiceProvider extends ServiceProvider
+class CmPayServiceServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

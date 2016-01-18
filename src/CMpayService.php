@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 define('paymentUrl', 'https://pay.cm.nl/API/v3/getTransactionUrl');
 define('methodsUrl', 'https://pay.cm.nl/API/v3/getPaymentMethods');
 
-class CMpayService
+class CmPayService
 {
     /**
      * getPaymentMethods.
