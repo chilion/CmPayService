@@ -55,7 +55,7 @@ class CmPayService
      *
      * @return bool|string
      */
-    public static function getTransactionUrl($amount, $method, $option, array $parameters = null)
+    public static function getTransactionUrl($amount, $method, $option, $parameters)
     {
 
         // Standard data
