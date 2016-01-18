@@ -36,7 +36,7 @@ class CmPayService
         // Get results
         $resultSet = self::transferData($sendObject, $method = 1);
 
-        return $resultSet;
+        return (array) $resultSet;
     }
 
     /**
