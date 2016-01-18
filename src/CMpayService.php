@@ -79,7 +79,11 @@ class CmPayService
         $sendObject['Hash'] = self::calculateHash($sendObject);
 
         // Get results and return given URL
-        return self::transferData($sendObject);
+        $transferData = self::transferData($sendObject);
+        $returnedData = json_decode($transferData, true);
+
+        
+        return $returnedData["Transaction"]["TransactionUrl"];
     }
 
     public static function checkPayment(Request $request, array $parameters = null)
