@@ -48,18 +48,21 @@ class CmPayService
      *
      * @author Chilion Snoek <chilionsnoek@gmail.com>
      *
+     * @param $amount The amount
+     * @param $method Payment Method (iDeal mostly)
+     * @param $option Payment Option (Bank Code)
      * @param $parameters
      *
      * @return bool|string
      */
-    public static function getTransactionUrl($parameters)
+    public static function getTransactionUrl($amount, $method, $option, array $parameters = null)
     {
 
         // Standard data
         $sendObject = self::mandatoryData();
 
         // Optional or Flexible Data
-        $sendObject['Amount'] = $parameters['amount'];
+        $sendObject['Amount'] = $amount;
         $sendObject['Reference'] = (array_key_exists('reference', $parameters)) ? $parameters['reference'] : config('cmpayservice.reference_prefix', 'your order with').' '.config('cmpayservice.company', 'company');
 
         // Return Url's
@@ -69,8 +72,8 @@ class CmPayService
         $sendObject['CancelURL'] = (array_key_exists('CancelURL', $parameters)) ? $parameters['CancelURL'] : config('cmpayservice.return_url').config('cmpayservice.cancel_url');
 
         // Payment data
-        $sendObject['PaymentMethod'] = (array_key_exists('paymentMethod', $parameters)) ? $parameters['paymentMethod'] : 'IDEAL';
-        $sendObject['PaymentMethodOption'] = (array_key_exists('paymentOption', $parameters)) ? $parameters['paymentOption'] : 'ABNANL2A';
+        $sendObject['PaymentMethod'] = $method;
+        $sendObject['PaymentMethodOption'] = $option;
 
         // Hash Calculation
         $sendObject['Hash'] = self::calculateHash($sendObject);
