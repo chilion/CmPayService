@@ -33,7 +33,25 @@ For payment methods & options:
 
 ## Executing
 To forward the customer to the payment screen of their financial instance.
-- CmPayService::getTransactionUrl($parameters);
+- CmPayService::getTransactionUrl($amount, $method, $option, $parameters);
+
+| Parameter Position 	| $           	| Description                                          	|
+|--------------------	|-------------	|------------------------------------------------------	|
+| 1                  	| $amount     	| The amount of the order to process                   	|
+| 2                  	| $method     	| The Payment method, this can be iDeal, Mr. Cash, etc 	|
+| 3                  	| $option     	| The Payment option, depends on the $method.          	|
+| 4                  	| $parameters 	| This is an array with multiple key's as information  	|
+
+The Parameters options:
+
+| Key           	| Description                            	| Type    	|
+|---------------	|----------------------------------------	|---------	|
+| "reference"   	| The reference for the order            	| varchar 	|
+| "return_url"  	| The base URL that gets returned to     	| url     	|
+| "success_url" 	| The part that goes behind the base URL 	| text    	|
+| "fail_url"    	| The part that goes behind the base URL 	| text    	|
+| "cancel_url"  	| The part that goes behind the base URL 	| text    	|
+| "error_url"   	| The part that goes behind the base URL 	| text    	|
 
 ## Check
 - CmPayService::checkPayment(Request::post);

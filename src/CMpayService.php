@@ -63,7 +63,7 @@ class CmPayService
 
         // Optional or Flexible Data
         $sendObject['Amount'] = $amount;
-        $sendObject['Reference'] = (array_key_exists('reference', $parameters)) ? $parameters['reference'] : config('cmpayservice.reference_prefix', 'your order with').' '.config('cmpayservice.company', 'company');
+        $sendObject['Reference'] = (array_key_exists('reference', $parameters)) ? $parameters['reference'] : config('cmpayservice.reference', 'Your order with ');
 
         // Return Url's
         $sendObject['SuccessURL'] = (array_key_exists('SuccessURL', $parameters)) ? $parameters['SuccessURL'] : config('cmpayservice.return_url').config('cmpayservice.success_url');
@@ -82,7 +82,7 @@ class CmPayService
         $transferData = self::transferData($sendObject);
         $returnedData = json_decode($transferData, true);
 
-        
+
         return $returnedData["Transaction"]["TransactionUrl"];
     }
 
