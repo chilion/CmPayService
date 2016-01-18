@@ -36,7 +36,9 @@ class CmPayService
         // Get results
         $resultSet = self::transferData($sendObject, $method = 1);
 
-        return $resultSet;
+        $return = json_decode($resultSet, true);
+
+        return $return["paymentMethods"];
     }
 
     /**
