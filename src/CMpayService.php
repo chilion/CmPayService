@@ -5,11 +5,10 @@ namespace CJSDevelopment;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
-
 define('paymentUrl', 'https://pay.cm.nl/API/v3/getTransactionUrl');
 define('methodsUrl', 'https://pay.cm.nl/API/v3/getPaymentMethods');
 
-class CmPayService
+class CMpayService
 {
     /**
      * getPaymentMethods.
@@ -38,7 +37,7 @@ class CmPayService
 
         $return = json_decode($resultSet, true);
 
-        return $return["paymentMethods"];
+        return $return['paymentMethods'];
     }
 
     /**
@@ -82,26 +81,13 @@ class CmPayService
         $transferData = self::transferData($sendObject);
         $returnedData = json_decode($transferData, true);
 
-
-        return $returnedData["Transaction"]["TransactionUrl"];
+        return $returnedData['Transaction']['TransactionUrl'];
     }
 
     public static function checkPayment(Request $request, array $parameters = null)
     {
         dd($request->all());
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Not Reachable functions. Should not, will not, be not, can not. Well, of course you can, because everything can. Coffee can. Thats a Dutch joke. Totally not working in English.
