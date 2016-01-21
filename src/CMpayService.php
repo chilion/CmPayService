@@ -86,10 +86,7 @@ class CmPayService
         return $returnedData["Transaction"]["TransactionUrl"];
     }
 
-    public static function checkPayment(Request $request, array $parameters = null)
-    {
-        dd($request->all());
-    }
+
 
 
 

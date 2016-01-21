@@ -54,6 +54,4 @@ The Parameters options:
 | "error_url"   	| The part that goes behind the base URL 	| text    	|
 
 ## Check
-- CmPayService::checkPayment(Request::post);
-$parameters should contain at least amount, but can hold more options.
-
+- You can check it yourself by your own lovings.
