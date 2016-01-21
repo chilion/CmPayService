@@ -5,11 +5,10 @@ namespace CJSDevelopment;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
-
 define('paymentUrl', 'https://pay.cm.nl/API/v3/getTransactionUrl');
 define('methodsUrl', 'https://pay.cm.nl/API/v3/getPaymentMethods');
 
-class CmPayService
+class CMpayService
 {
     /**
      * getPaymentMethods.
@@ -38,7 +37,7 @@ class CmPayService
 
         $return = json_decode($resultSet, true);
 
-        return $return["paymentMethods"];
+        return $return['paymentMethods'];
     }
 
     /**
@@ -82,21 +81,8 @@ class CmPayService
         $transferData = self::transferData($sendObject);
         $returnedData = json_decode($transferData, true);
 
-
-        return $returnedData["Transaction"]["TransactionUrl"];
+        return $returnedData['Transaction']['TransactionUrl'];
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
